@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Logros{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2 class="fw-bold"><i class="bi bi-trophy-fill text-warning me-2"></i>Salón de la Fama</h2>
+        <p class="text-muted">Colecciona insignias participando en la comunidad.</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- Filtros (HU-5) -->
+        <div class="btn-group" role="group">
+            <a href="?filtro=todas" class="btn btn-outline-secondary {% if filtro_actual == 'todas' %}active{% endif %}">Todas</a>
+            <a href="?filtro=obtenidas" class="btn btn-outline-success {% if filtro_actual == 'obtenidas' %}active{% endif %}">Obtenidas</a>
+            <a href="?filtro=faltantes" class="btn btn-outline-secondary {% if filtro_actual == 'faltantes' %}active{% endif %}">Por Ganar</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for insignia in insignias %}
+        <div class="col-md-4 col-lg-3 mb-4">
+            <!-- Lógica Visual: Si la tengo, color normal. Si no, gris y opaca. -->
+            <!-- La clase 'grayscale-filter' debe estar definida en tu custom.css -->
+            <div class="card card-custom h-100 text-center p-3 {% if insignia.id in mis_ids %}border-success border-2{% else %}grayscale-filter{% endif %}">
+                <div class="card-body-custom">
+                    <div class="mb-3">
+                        <!-- Icono grande -->
+                        <i class="bi {{ insignia.icono }} display-1 {% if insignia.id in mis_ids %}text-warning{% else %}text-muted{% endif %}"></i>
+                    </div>
+                    <h5 class="fw-bold">{{ insignia.nombre }}</h5>
+                    <p class="small text-muted mb-3">{{ insignia.descripcion }}</p>
+                    
+                    {% if insignia.id in mis_ids %}
+                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>¡Desbloqueada!</span>
+                    {% else %}
+                        <div class="alert alert-light border p-2 small">
+                            <strong>Requisito:</strong><br>
+                            {{ insignia.requisito }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No se encontraron insignias con este filtro.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

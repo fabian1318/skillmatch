@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Calificar Intercambio{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-custom">
+            <div class="card-header-custom text-center">
+                <h4 class="fw-bold mb-0">Califica tu experiencia</h4>
+            </div>
+            <div class="card-body-custom text-center">
+                <div class="mb-4">
+                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center mx-auto mb-2 fs-2 fw-bold text-secondary" style="width: 80px; height: 80px;">
+                        {{ otro_usuario.first_name|slice:":1" }}{{ otro_usuario.last_name|slice:":1" }}
+                    </div>
+                    <h5 class="fw-bold">{{ otro_usuario.first_name }} {{ otro_usuario.last_name }}</h5>
+                    <p class="text-muted small">Habilidad: {{ intercambio.habilidad_solicitada.nombre }}</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-semibold">Puntuación (Estrellas)</label>
+                        {{ form.estrellas }}
+                    </div>
+                    <div class="mb-4 text-start">
+                        <label class="form-label fw-semibold">Comentario</label>
+                        {{ form.comentario }}
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary fw-bold">Enviar Reseña</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

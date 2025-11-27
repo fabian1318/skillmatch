@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Buzón de Sugerencias{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-custom shadow-sm">
+            <div class="card-header-custom text-center bg-white border-bottom-0 pb-0">
+                <div class="display-4 mb-2">📬</div>
+                <h3 class="fw-bold">Buzón de Sugerencias</h3>
+                <p class="text-muted">Ayúdanos a mejorar SkillMatch con tus ideas.</p>
+            </div>
+            <div class="card-body-custom pt-0">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-secondary">Tipo de mensaje</label>
+                        {{ form.tipo }}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary">Comentarios</label>
+                        {{ form.mensaje }}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary fw-bold">Enviar Mensaje</button>
+                        <a href="{% url 'home' %}" class="btn btn-link text-muted">Volver al inicio</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

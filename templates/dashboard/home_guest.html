@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="mb-4 fw-bold text-dark">Bienvenido a <span style="color: var(--primary-red);">SkillMatch</span></h1>
+        <p class="lead mb-5">Intercambia habilidades con tus compañeros de INACAP de forma segura.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-custom">
+            <div class="card-body-custom text-center">
+                <i class="bi bi-search fs-1 text-danger mb-3"></i>
+                <h5 class="card-title fw-bold">Busca</h5>
+                <p class="card-text text-muted">Encuentra compañeros que enseñen lo que necesitas aprender.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom">
+            <div class="card-body-custom text-center">
+                <i class="bi bi-arrow-left-right fs-1 text-danger mb-3"></i>
+                <h5 class="card-title fw-bold">Intercambia</h5>
+                <p class="card-text text-muted">Coordina sesiones de aprendizaje mutuo en el campus.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom">
+            <div class="card-body-custom text-center">
+                <i class="bi bi-award fs-1 text-danger mb-3"></i>
+                <h5 class="card-title fw-bold">Crece</h5>
+                <p class="card-text text-muted">Gana insignias y mejora tu reputación en la comunidad.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

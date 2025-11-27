@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card card-custom">
+            <div class="card-header-custom text-center">
+                <h4 class="mb-0 fw-bold" style="color: var(--primary-red);">Crear Cuenta</h4>
+            </div>
+            <div class="card-body-custom">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Por favor corrige los errores abajo indicados.
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary fw-bold">Registrarse</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-white text-center py-3 border-0">
+                <small>¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: var(--primary-red);">Inicia Sesión</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

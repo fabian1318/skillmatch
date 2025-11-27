@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+        <div class="card card-custom">
+            <div class="card-header-custom text-center">
+                <h4 class="mb-0 fw-bold" style="color: var(--primary-red);">Bienvenido</h4>
+            </div>
+            <div class="card-body-custom">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger small">
+                            Credenciales incorrectas o cuenta no activa.
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Correo Institucional</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Contraseña</label>
+                        {{ form.password }}
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary fw-bold">Ingresar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-white text-center py-3 border-0">
+                <small class="d-block mb-2">¿No tienes cuenta? <a href="{% url 'register' %}" class="text-decoration-none fw-bold" style="color: var(--primary-red);">Regístrate</a></small>
+                
+                <!-- ENLACE DE RECUPERACIÓN CONECTADO (HU-24) -->
+                <small>
+                    <a href="{% url 'password_reset' %}" class="text-muted text-decoration-none">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

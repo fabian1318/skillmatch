@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Reportar Usuario{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-custom border-danger">
+            <div class="card-header-custom bg-danger text-white text-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Reportar Usuario</h5>
+            </div>
+            <div class="card-body-custom">
+                <p class="text-center">
+                    Estás reportando a <strong>{{ usuario.first_name }} {{ usuario.last_name }}</strong>.
+                    <br><span class="text-muted small">Este reporte será confidencial y revisado por un administrador.</span>
+                </p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Motivo</label>
+                        {{ form.motivo }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Descripción detallada</label>
+                        {{ form.descripcion }}
+                        <div class="form-text">Incluye detalles específicos de lo sucedido.</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger fw-bold">Enviar Reporte</button>
+                        <a href="{% url 'perfil_publico' usuario.id %}" class="btn btn-link text-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

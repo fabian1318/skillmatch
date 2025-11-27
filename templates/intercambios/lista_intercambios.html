@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Intercambios{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold">Gestión de Intercambios 🤝</h2>
+        <p class="text-muted">Revisa tus solicitudes pendientes y el estado de tus aprendizajes.</p>
+    </div>
+</div>
+
+<!-- Pestañas de Navegación -->
+<ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-bold" id="recibidas-tab" data-bs-toggle="tab" data-bs-target="#recibidas" type="button">
+            Solicitudes Recibidas 
+            {% if solicitudes_recibidas.count > 0 %}
+                <span class="badge bg-danger ms-1">{{ solicitudes_recibidas.count }}</span>
+            {% endif %}
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-bold" id="enviadas-tab" data-bs-toggle="tab" data-bs-target="#enviadas" type="button">
+            Enviadas por mí
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    
+    <!-- TAB 1: SOLICITUDES RECIBIDAS (Bandeja de Entrada) -->
+    <div class="tab-pane fade show active" id="recibidas" role="tabpanel">
+        {% if solicitudes_recibidas %}
+            {% for intercambio in solicitudes_recibidas %}
+                <div class="card card-custom mb-3 border-start border-4 {% if intercambio.estado == 'Pendiente' %}border-warning{% elif intercambio.estado == 'Aceptado' %}border-success{% elif intercambio.estado == 'EnProgreso' %}border-primary{% elif intercambio.estado == 'Completado' %}border-secondary{% endif %}">
+                    <div class="card-body-custom">
+                        <div class="row align-items-center">
+                            
+                            <!-- Columna Izquierda: Información del Intercambio -->
+                            <div class="col-md-7">
+                                <h5 class="fw-bold mb-1">
+                                    {{ intercambio.solicitante.first_name }} quiere aprender <span class="text-primary">{{ intercambio.habilidad_solicitada.nombre }}</span>
+                                </h5>
+                                <p class="text-muted mb-2 small">
+                                    A cambio ofrece enseñar: <strong class="text-success">{{ intercambio.habilidad_ofrecida.nombre }}</strong>
+                                </p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge {% if intercambio.estado == 'Pendiente' %}bg-warning text-dark{% elif intercambio.estado == 'Aceptado' %}bg-success{% elif intercambio.estado == 'EnProgreso' %}bg-primary{% else %}bg-secondary{% endif %}">
+                                        {{ intercambio.estado }}
+                                    </span>
+                                    <small class="text-muted border-start ps-2">{{ intercambio.fecha_creacion|date:"d M, H:i" }}</small>
+                                </div>
+                            </div>
+                            
+                            <!-- Columna Derecha: Botones de Acción -->
+                            <div class="col-md-5 text-end">
+                                {% if intercambio.estado == 'Pendiente' %}
+                                    <div class="btn-group" role="group">
+                                        <!-- Botón Rechazar -->
+                                        <a href="{% url 'responder_solicitud' intercambio.id 'rechazar' %}" 
+                                           class="btn btn-outline-danger btn-sm"
+                                           onclick="return confirm('¿Seguro que quieres rechazar esta solicitud?');">
+                                            Rechazar
+                                        </a>
+                                        
+                                        <!-- Botón Aceptar -->
+                                        <a href="{% url 'responder_solicitud' intercambio.id 'aceptar' %}" 
+                                           class="btn btn-success btn-sm fw-bold">
+                                            Aceptar Solicitud
+                                        </a>
+                                    </div>
+                                    
+                                {% elif intercambio.estado == 'Aceptado' %}
+                                    <!-- Botón para iniciar (HU-10) -->
+                                    <a href="{% url 'iniciar_intercambio' intercambio.id %}" class="btn btn-primary btn-sm shadow-sm">
+                                        <i class="bi bi-play-fill me-1"></i>Iniciar Intercambio
+                                    </a>
+                                    <!-- Mostrar correo (HU-14) -->
+                                    <div class="mt-2 small text-muted bg-light rounded p-1 d-inline-block">
+                                        <i class="bi bi-envelope-at-fill me-1 text-primary"></i> {{ intercambio.solicitante.email }}
+                                    </div>
+
+                                {% elif intercambio.estado == 'EnProgreso' %}
+                                    <!-- Botón Finalizar (HU-13) -->
+                                    <a href="{% url 'finalizar_intercambio' intercambio.id %}" 
+                                       class="btn btn-outline-success btn-sm"
+                                       onclick="return confirm('¿Confirmas que el intercambio finalizó correctamente?');">
+                                        <i class="bi bi-check-circle-fill me-1"></i>Marcar Completado
+                                    </a>
+                                    <div class="mt-1 small text-muted">
+                                        <i class="bi bi-envelope-at me-1"></i> {{ intercambio.solicitante.email }}
+                                    </div>
+                                    
+                                {% elif intercambio.estado == 'Completado' %}
+                                    <span class="badge bg-success mb-2"><i class="bi bi-check-all me-1"></i>Finalizado</span>
+                                    <br>
+                                    <!-- Botón Calificar (HU-11) -->
+                                    <a href="{% url 'calificar_intercambio' intercambio.id %}" class="btn btn-outline-warning btn-sm text-dark">
+                                        <i class="bi bi-star-fill text-warning me-1"></i>Calificar
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted small fst-italic">Estado: {{ intercambio.estado }}</span>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5 bg-white rounded card-custom">
+                <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                <p class="text-muted mb-0">No tienes solicitudes pendientes.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- TAB 2: SOLICITUDES ENVIADAS (Bandeja de Salida) -->
+    <div class="tab-pane fade" id="enviadas" role="tabpanel">
+        {% if solicitudes_enviadas %}
+            {% for intercambio in solicitudes_enviadas %}
+                <div class="card card-custom mb-3">
+                    <div class="card-body-custom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1">Solicitaste a {{ intercambio.receptor.first_name }}: <span class="text-primary">{{ intercambio.habilidad_solicitada.nombre }}</span></h6>
+                                <p class="text-muted small mb-0">Ofreciste: {{ intercambio.habilidad_ofrecida.nombre }}</p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge {% if intercambio.estado == 'Pendiente' %}bg-warning text-dark{% elif intercambio.estado == 'Aceptado' %}bg-success{% elif intercambio.estado == 'EnProgreso' %}bg-primary{% elif intercambio.estado == 'Completado' %}bg-secondary{% endif %} mb-1">
+                                    {{ intercambio.estado }}
+                                </span>
+                                <br>
+                                
+                                <!-- Acciones para el solicitante -->
+                                {% if intercambio.estado == 'Pendiente' %}
+                                    <!-- Cancelar (HU-17) -->
+                                    <small class="text-danger" style="cursor: pointer;" onclick="alert('Para cancelar, implementa la lógica de borrado en views.py')">Cancelar</small>
+                                
+                                {% elif intercambio.estado == 'Aceptado' %}
+                                    <div class="small text-muted"><i class="bi bi-envelope-at me-1"></i> {{ intercambio.receptor.email }}</div>
+
+                                {% elif intercambio.estado == 'EnProgreso' %}
+                                    <div class="small text-muted"><i class="bi bi-envelope-at me-1"></i> {{ intercambio.receptor.email }}</div>
+                                
+                                {% elif intercambio.estado == 'Completado' %}
+                                    <!-- Botón Calificar (HU-11) -->
+                                    <a href="{% url 'calificar_intercambio' intercambio.id %}" class="btn btn-outline-warning btn-sm text-dark mt-1">
+                                        <i class="bi bi-star-fill text-warning me-1"></i>Calificar
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5 bg-white rounded card-custom">
+                <p class="text-muted mb-3">No has enviado solicitudes aún.</p>
+                <a href="{% url 'buscar' %}" class="btn btn-primary btn-sm">Ir a buscar compañeros</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

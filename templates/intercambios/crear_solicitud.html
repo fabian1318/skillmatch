@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Solicitud{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-custom shadow-lg">
+            <div class="card-header-custom text-center bg-light">
+                <h4 class="fw-bold mb-0">Nueva Solicitud de Intercambio</h4>
+            </div>
+            <div class="card-body-custom">
+                <div class="text-center mb-4">
+                    <p class="text-muted mb-1">Quieres aprender:</p>
+                    <h3 class="fw-bold text-success">{{ habilidad_solicitada.nombre }}</h3>
+                    <p class="small text-muted">de {{ receptor.first_name }} {{ receptor.last_name }}</p>
+                </div>
+
+                <hr>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="form-label fw-bold h5">¿Qué ofreces a cambio?</label>
+                        <p class="small text-muted">Selecciona una de tus habilidades para enseñarle a {{ receptor.first_name }}.</p>
+                        
+                        {% if mis_habilidades %}
+                            <select name="habilidad_ofrecida" class="form-select form-select-lg" required>
+                                <option value="" selected disabled>-- Selecciona tu habilidad --</option>
+                                {% for hab in mis_habilidades %}
+                                    <option value="{{ hab.id }}">{{ hab.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            <div class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                No tienes habilidades registradas para ofrecer. 
+                                <a href="{% url 'edit_profile' %}" class="alert-link">Edita tu perfil primero</a>.
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold" {% if not mis_habilidades %}disabled{% endif %}>
+                            Enviar Solicitud
+                        </button>
+                        <a href="{% url 'perfil_publico' receptor.id %}" class="btn btn-link text-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

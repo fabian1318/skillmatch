@@ -1,0 +1,144 @@
+/* static/css/custom.css */
+
+:root {
+    /* Paleta Institucional */
+    --primary-red: #d32f2f;      /* Rojo Institucional */
+    --primary-black: #000000;    /* Negro */
+    --primary-white: #ffffff;    /* Blanco */
+    
+    /* Variables de UI (Estilo SaaS/Cards) */
+    --bg-app: #f4f6f9;           /* Gris muy claro para el fondo general */
+    --text-main: #333333;
+    --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Sombra suave */
+    --border-radius: 0.75rem;    /* Bordes redondeados modernos */
+}
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: var(--primary-white);
+    box-shadow: var(--card-shadow);
+    padding: 1rem 2rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary-red) !important;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--text-main) !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--primary-red) !important;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.btn-primary:hover {
+    background-color: #b71c1c; /* Rojo más oscuro */
+    border-color: #b71c1c;
+}
+
+.btn-outline-primary {
+    color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-red);
+    color: var(--primary-white);
+}
+
+/* Estilo Cards (SaaS Look) */
+.card-custom {
+    background-color: var(--primary-white);
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 1.5rem;
+}
+
+.card-custom:hover {
+    transform: translateY(-3px); /* Efecto de elevación sutil */
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
+}
+
+.card-header-custom {
+    background-color: transparent;
+    border-bottom: 1px solid #eee;
+    padding: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-black);
+}
+
+.card-body-custom {
+    padding: 1.5rem;
+}
+
+/* Footer */
+.footer-custom {
+    background-color: var(--primary-black);
+    color: var(--primary-white);
+    padding: 2rem 0;
+    margin-top: auto; /* Push footer to bottom */
+}
+
+/* ... existing code ... */
+.footer-custom {
+    background-color: var(--primary-black);
+    color: var(--primary-white);
+    padding: 2rem 0;
+    margin-top: auto; /* Push footer to bottom */
+}
+
+/* --- Estilos Nuevos para Insignias (Sprint 4) --- */
+.grayscale-filter {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.grayscale-filter:hover {
+    filter: grayscale(0%); /* Al pasar el mouse se ve a color */
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.skills-list-container ul {
+    list-style-type: none; /* Quitar puntos de lista */
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.skills-list-container li {
+    margin-bottom: 0.5rem; /* Espacio entre opciones */
+}
+
+.skills-list-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+    transform: scale(1.2); /* Hacer el checkbox un poco más grande */
+    cursor: pointer;
+}
+
+.skills-list-container label {
+    cursor: pointer; /* Que el texto también sea cliqueable */
+}

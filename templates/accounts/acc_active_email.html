@@ -1,0 +1,7 @@
+Hola {{ user.first_name }},
+
+Por favor haz clic en el siguiente enlace para confirmar tu registro en SkillMatch:
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Si no te registraste, ignora este mensaje.
