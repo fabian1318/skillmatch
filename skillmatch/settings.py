@@ -171,22 +171,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-# --- Configuración de Email ---
+# skillmatch/settings.py
 
-# Configuración del Servidor (Común)
+# --- Configuración de Email ---
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
-EMAIL_USE_TLS = True
+
+# CAMBIO: Usar puerto 465 y SSL (Más estable en la nube)
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 465))
+EMAIL_USE_TLS = False  # Apagar TLS
+EMAIL_USE_SSL = True   # Encender SSL
+
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# Selección de Backend según el entorno
+# Selección de Backend
 if DEBUG:
-    # Entorno Local (Windows): Usamos el fix de SSL
+    # Entorno Local: Backend Custom (para tu antivirus)
     EMAIL_BACKEND = 'utils.email_backend.CustomEmailBackend'
 else:
-    # Entorno Producción (Render): Usamos el estándar de Django (Linux no necesita el fix)
+    # Entorno Producción: Backend Estándar
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Redirección tras iniciar sesión (Vamos al Dashboard/Home)
