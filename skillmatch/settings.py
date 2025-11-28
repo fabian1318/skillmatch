@@ -144,18 +144,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+# --- Configuración de Archivos Estáticos (CSS, JS, Imágenes) ---
 
+STATIC_URL = '/static/'
+
+# 1. Dónde están tus archivos de desarrollo (CSS que tú escribiste)
+# Esta ruta debe estar SIEMPRE disponible, no solo en DEBUG
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# 2. Dónde guardará Django los archivos finales para producción
+# (Render buscará aquí los archivos)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# 3. Configuración de WhiteNoise para servir los archivos en producción
 if not DEBUG:
-    # En producción
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Compresión y caché eficiente para producción
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-else:
-    # En desarrollo local
-    STATICFILES_DIRS = [
-        BASE_DIR / "static",
-    ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
