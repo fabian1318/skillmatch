@@ -187,7 +187,9 @@ LOGIN_REDIRECT_URL = 'home'
 # Redirección tras cerrar sesión (Vamos al Login o al Home, tú decides)
 LOGOUT_REDIRECT_URL = 'login'
 
-# Permitir cualquier host en Render (o especifica tu dominio .onrender.com)
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-if not DEBUG:
-    ALLOWED_HOSTS += ['.onrender.com'] # Acepta cualquier subdominio de Render
+
+# Configuración adicional para Render (asegúrate de tener esto también)
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
