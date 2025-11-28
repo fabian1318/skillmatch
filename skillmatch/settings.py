@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv # Importar dotenv
+import dj_database_url
 
 # Cargar variables de entorno
 load_dotenv()
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,6 +91,8 @@ WSGI_APPLICATION = 'skillmatch.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Configuración de Base de Datos
+# Por defecto usa la local del .env
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -99,6 +103,11 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
+
+# Si estamos en Render (existe la variable DATABASE_URL), sobrescribimos la config
+database_url = os.environ.get("DATABASE_URL")
+if database_url:
+    DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 # Password validation
@@ -135,11 +144,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-# Carpetas adicionales de estáticos (la que creamos en la raíz)
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+
+if not DEBUG:
+    # En producción
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    # En desarrollo local
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -169,3 +186,8 @@ LOGIN_REDIRECT_URL = 'home'
 
 # Redirección tras cerrar sesión (Vamos al Login o al Home, tú decides)
 LOGOUT_REDIRECT_URL = 'login'
+
+# Permitir cualquier host en Render (o especifica tu dominio .onrender.com)
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+if not DEBUG:
+    ALLOWED_HOSTS += ['.onrender.com'] # Acepta cualquier subdominio de Render
