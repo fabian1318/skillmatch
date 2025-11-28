@@ -142,3 +142,23 @@ body {
 .skills-list-container label {
     cursor: pointer; /* Que el texto también sea cliqueable */
 }
+
+.main-content-wrapper {
+    margin-top: 100px; /* Valor por defecto (PC) */
+    margin-bottom: 40px;
+}
+
+/* Cuando la pantalla sea de tablet o celular (menos de 992px) */
+@media (max-width: 991.98px) {
+    .main-content-wrapper {
+        margin-top: 80px; /* Menos espacio arriba */
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem; /* Logo un poco más pequeño */
+    }
+    
+    .card-custom {
+        margin-bottom: 1rem; /* Tarjetas más juntas */
+    }
+}
