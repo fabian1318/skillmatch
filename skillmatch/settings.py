@@ -173,14 +173,11 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # skillmatch/settings.py
 
-# --- Configuración de Email ---
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-
-# CAMBIO: Usar puerto 465 y SSL (Más estable en la nube)
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', 465))
-EMAIL_USE_TLS = False  # Apagar TLS
-EMAIL_USE_SSL = True   # Encender SSL
-
+# --- Configuración de Email (Intento Final SMTP) ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
